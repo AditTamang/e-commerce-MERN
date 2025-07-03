@@ -3,6 +3,7 @@ import { createUser} from '../src/controller/userController.js'
 import userRoutes from '../src/routes/userRoutes.js'
 import { configDotenv } from 'dotenv'
 import connectDb from './config/db.js'
+import productRoutes from './routes/productRoutes.js'
 
 configDotenv()
 
@@ -22,8 +23,8 @@ app.get('/',(req,res)=>{
 })
 
 
-app.use('/api', userRoutes)
-app.use("/api/product", ()=>{})
+app.use('/api/user', userRoutes)
+app.use("/api/product", productRoutes)
 
 const port = process.env.PORT;
 app.listen(port,()=>{

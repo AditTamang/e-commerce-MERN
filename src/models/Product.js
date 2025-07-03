@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const productSchema = new mongoose.Schema({
 
-    prodcutName:{
+    productName:{
         type: String,
         required: true
     },
@@ -17,11 +17,23 @@ const productSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
+    ram :{
+        type: Number
+    },
+    rom:{
+        type: Number
+    },
+    display:{
+        type: String
+    },
+    processor:{
+        type: String
+    },
     imageUrl:{
         type: String
     },
     featured : {
-        type: boolean,
+        type: Boolean,
         default: true
     },
     rating:{
