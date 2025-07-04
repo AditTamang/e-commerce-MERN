@@ -43,6 +43,16 @@ const productSchema = new mongoose.Schema({
     isActive: {
         type: Boolean,
         default: true,
+    },
+    gen:{
+        type: Number
+    },
+    brand:{
+        type: String,
+    },
+    use:{
+        type: String,
+        enum: ["Gaming", "Professional", "Normal","Office"]
     }
 },
 {

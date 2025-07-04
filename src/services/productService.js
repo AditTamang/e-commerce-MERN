@@ -4,5 +4,24 @@ const createProduct = async(data)=>{
     return await Product.create(data);
 }
 
+const getAllProduct = async ()=>{
+    return await Product.find();
+    
+    
+    
+}
 
-export default createProduct
+const getProductById = async (id)=>{
+    return await Product.findById(id)
+}
+
+const deleteProductById = async(id)=>{
+    return await Product.deleteOne( {_id : id});
+}
+
+const updateProductById = async(data, id)=>{
+    return await Product.findByIdAndUpdate(id,data, {new:true});
+}
+
+
+export default {createProduct, getAllProduct, getProductById, deleteProductById , updateProductById};
