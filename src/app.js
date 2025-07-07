@@ -4,6 +4,7 @@ import userRoutes from '../src/routes/userRoutes.js'
 import { configDotenv } from 'dotenv'
 import connectDb from './config/db.js'
 import productRoutes from './routes/productRoutes.js'
+import authRoutes from '../src/routes/authRoutes.js'
 
 configDotenv()
 
@@ -25,6 +26,7 @@ app.get('/',(req,res)=>{
 
 app.use('/api/user', userRoutes)
 app.use("/api/product", productRoutes)
+app.use("/api/auth", authRoutes)
 
 const port = process.env.PORT;
 app.listen(port,()=>{
