@@ -14,7 +14,7 @@ const createUser = async (req, res)=>{
     if(!email){
         return res.send("Pleaser enter the correct email:")
     }
-    if(paswword !== confirmPassword) 
+    if(password !== confirmPassword) 
     {
         return res.send("Password do not match.")
     }
@@ -26,7 +26,7 @@ const createUser = async (req, res)=>{
     catch(error) {
     console.log(error.message)
     res.status(400).json({
-        messsage: "error occured",
+        message: "error occured",
         error: error.message
     })
 

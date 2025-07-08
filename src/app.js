@@ -28,6 +28,7 @@ app.use('/api/user', userRoutes)
 app.use("/api/product", productRoutes)
 app.use("/api/auth", authRoutes)
 
+
 const port = process.env.PORT;
 app.listen(port,()=>{
     console.log(`The port is running in the${port}`)

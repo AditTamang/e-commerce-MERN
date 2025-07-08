@@ -20,9 +20,9 @@ const userSchema = new mongoose.Schema({
         type : Number,
     },
     role:{
-        type : [String],
+        type : String,
         anum : ['ADMIN','EMPLOYEE', 'CUSTOMER'],
-        default: ['CUSTOMER']
+        default: 'CUSTOMER'
     }
 },{
         timestamps: true
