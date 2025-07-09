@@ -5,6 +5,7 @@ import { configDotenv } from 'dotenv'
 import connectDb from './config/db.js'
 import productRoutes from './routes/productRoutes.js'
 import authRoutes from '../src/routes/authRoutes.js'
+import cookieParser from 'cookie-parser'
 
 configDotenv()
 
@@ -12,6 +13,7 @@ const app = express()
 
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
+app.use(cookieParser())
 
 // const express = require('express')
 

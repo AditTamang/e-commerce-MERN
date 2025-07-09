@@ -1,5 +1,6 @@
 import authService from "../services/authService.js";
 import jwt from 'jsonwebtoken'
+import { createToken } from "../helpers/token.js";
 
 const register  = async(req,res)=>{
 
@@ -54,7 +55,8 @@ const login = async(req,res)=>{
     }
 
 //Webtoken generation
-    const token = jwt.sign(payload, "secretkey")
+    // const token = jwt.sign(payload, "secretkey")
+    const token = createToken(payload)
     res.cookie('authToken',token)
 
     res.status(200).json({
