@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
 
 const createToken = (payload)=>{
-    return jwt.sign(payload.process.env.JWT_SECRET)
+    return jwt.sign(payload,process.env.JWT_SECRET)
 }
 
 export {createToken}

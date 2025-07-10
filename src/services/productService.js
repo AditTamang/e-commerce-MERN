@@ -19,12 +19,13 @@ const getAllProduct = async (query = {})=>{
     // if(query.ram) {filters.ram = {$in: query.ram.split(',')}}
     console.log(filters) 
 
-    console.log(sort)
+  
     
-    const sort = query.sort || -1
+    const sort = JSON.parse(query.sort || '{}')
 
-    console.log(JSON.parse(sort))
-    return sort
+
+   
+    // return sort
     // console.log(query.ram?.split(',').map(n=>parseInt(n)))
     // console.log(query.brands.split(','))
     // return filters

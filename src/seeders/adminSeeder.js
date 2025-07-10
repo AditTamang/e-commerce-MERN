@@ -1,31 +1,28 @@
-import mongoose from "mongoose"
-import User from "../models/User.js"
+import mongoose from "mongoose";
+import User from "../models/User.js";
+import { hashPassword } from "../utils/utility.js";
 
+const adminSeeder = async () => {
+  try {
+    const adminFound = await User.findOne({ email: "admin@gmail.com" });
 
-const adminSeeder = async()=>{
-    try{
-       const adminFound =  await mongoose.connect(process.env.MONGO_URI)
-        console.log("db is connected succefully")
+    if (!adminFound) {
+      const password = hashPassword("admin");
+      await User.create({
+        userName: "admin",
+        password,
+        email: "admin@gmail.com",
+        phone: 9807373362,
+        role: "ADMIN",
+      });
 
-
-        
-        if(!adminFound){
-            User.create({
-                userName : "admin",
-                password: "admin",
-                email: "admin@gmail.com",
-                phone: 9807373362,
-                role: "ADMIN"
-            })
-        console.log("Admin is sedded. ")
+      console.log("Admin sedded successfully. ");
+    } else {
+      console.log("Admin already exists");
     }
-    else{
-        console.log("Admin already exists")
-    }
+  } catch (error) {
+    console.log(error.message);
+  }
+};
 
-    }catch(error){
-        console.log(error.message)
-    }
-}
-
-export {adminSeeder}
+export { adminSeeder };
