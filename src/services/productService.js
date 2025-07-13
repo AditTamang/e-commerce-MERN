@@ -45,7 +45,7 @@ const getProductById = async (id)=>{
 
 const deleteProductById = async(id)=>{
     return await Product.deleteOne( {_id : id});
-}
+} 
 
 const updateProductById = async(data, id)=>{
     return await Product.findByIdAndUpdate(id,data, {new:true});
