@@ -17,16 +17,31 @@ router.post("/login", login);
 router.post("/forgotPassword", async (req, res) => {
   try {
     const { email } = req.body;
-    console.log("email", email);
+    // console.log("email", email);
     if (!email) {
       throw new Error("Email is required");
     }
     const otp = generateOtp();
 
-    const newOtp = await Otp.create({
-      email: email,
-      otp: otp,
-    });
+    const doesExist = await Otp.findOne({ email });
+
+    let newOtp;
+
+    if (!doesExist) {
+      newOtp = await Otp.create({
+        email: email,
+        otp: otp,
+      });
+    } else {
+      newOtp = await Otp.findOneAndUpdate(
+        { email },
+        {
+          otp: otp,
+          createdAt: new Date(),
+        },
+        { new: true }
+      );
+    }
 
     sendMail(email, otp);
 
