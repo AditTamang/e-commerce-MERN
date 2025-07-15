@@ -22,9 +22,9 @@ const userSchema = new mongoose.Schema(
       enum: ["ADMIN", "EMPLOYEE", "CUSTOMER"],  // fixed from "anum" to "enum"
       default: "CUSTOMER",
     },
-    canChangePassword: {
-      type: Boolean,
-      default: false,
+    otpExpiresAt: {
+      type: Date,
+      default: null
     },
   },
   {

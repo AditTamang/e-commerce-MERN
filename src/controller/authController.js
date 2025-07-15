@@ -93,11 +93,14 @@ const login = async (req, res) => {
 const forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
+
+    res.cookie("userEmail", email);
+
     if (!email) {
       throw new Error("Email is required");
     }
 
-    const data = await authService.forgotPassword({email})
+    const data = await authService.forgotPassword({ email });
     res.send(data);
   } catch (error) {
     console.log(error.message);
@@ -107,10 +110,15 @@ const forgotPassword = async (req, res) => {
 
 const verifyOtp = async (req, res) => {
   try {
-    const { email, otp } = req.body;
+    const { otp } = req.body;
+    const email = req.cookies.userEmail;
 
-    if(!email || !otp) {
-      throw new Error("Email and OTP required")
+    console.log(email);
+
+    // const { email, otp } = req.body;
+
+    if (!email || !otp) {
+      throw new Error("Email and OTP required");
     }
 
     const data = await authService.verifyOtp({ email, otp });
