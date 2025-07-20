@@ -1,4 +1,4 @@
-const Textfield = ({
+const TextField = ({
     label,
     onChange,
     id,
@@ -23,4 +23,4 @@ const Textfield = ({
     );
 };
 
-export default Textfield;
+export default TextField;
