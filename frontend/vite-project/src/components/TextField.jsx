@@ -2,6 +2,7 @@ const TextField = ({
     label,
     onChange,
     id,
+    name,
     value,
     placeholder,
     required = false,
