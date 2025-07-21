@@ -16,7 +16,7 @@ const Register = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
+    console.table(formData);
     navigate("/login");
   };
 
