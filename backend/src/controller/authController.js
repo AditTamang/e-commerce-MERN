@@ -1,106 +1,80 @@
-import authService from "../services/authService.js";
 import { createToken } from "../helpers/token.js";
+import Otp from "../models/Otp.js";
+import User from "../models/User.js";
+import authService from "../Services/authService.js";
 
 const register = async (req, res) => {
   try {
-    const { email, phone, userName, password, confirmPassword } = req.body;
+    const { email, phone, password, confirmPassword, userName } = req.body;
 
     if (!password || !email || !phone || !confirmPassword || !userName) {
-      return res.status(400).json({ message: "User credential is missing." });
+      return res.status(400).json({ message: "user credentials missing" });
     }
 
     if (password !== confirmPassword) {
-      return res.status(400).json({
-        message: "Password and confirm password does not match.",
-      });
+      return res.status(400).json({ message: "password donot match" });
     }
 
     const data = await authService.register({
-      email: email,
-      phone: phone,
-      userName: userName,
-      password: password,
+      email,
+      phone,
+      password,
+      userName,
     });
-
-    res.status(200).json({
-      message: "User registered successful",
+    res.status(201).json({
+      message: "user registered successful",
       data,
     });
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({
-      message: "Error occured to register",
-      error: error.message,
-    });
+    res
+      .status(500)
+      .json({ message: "error occured to register", error: error.message });
   }
 };
 
 const login = async (req, res) => {
   try {
-    //login function
     const { email, password } = req.body;
 
     if (!email || !password) {
-      throw new Error("User credential is missing.");
+      // return res.status(400).json({message:"user credentials missing"})
+      throw new Error("user credentials missing");
     }
-
     const data = await authService.login({ email, password });
-
     const payload = {
       id: data._id,
-      userName: data.userName,
       role: data.role,
       phone: data.phone,
       email: data.email,
     };
-
-    //Webtoken generation
-    // const token = jwt.sign(payload, "secretkey")
     const token = createToken(payload);
     res.cookie("authToken", token);
-
     res.status(200).json({
-      message: "Login successful",
+      message: "login successful",
       data,
       token,
     });
   } catch (error) {
     console.log(error.message);
-    res.status(400).send(error.message);
+    res
+      .status(400)
+      .json({ message: "error occurred during login", error: error.message });
   }
 };
-
-// const forgotPassword = async (req, res) => {
-//   try {
-//     const { email } = req.body;
-//     console.log("email", email);
-//     if (!email) {
-//       throw new Error("Email is required");
-//     }
-
-//     const data = await authService.forgotPassword({ email });
-
-//     res.status(200).json({ message: "Successfully sent Email", data });
-//   } catch (error) {
-//     console.log(error.message);
-//     console.log("first");
-//     res.status(400).json({
-//       message: error.message,
-//     });
-//   }
-// };
 
 const forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
-
     res.cookie("userEmail", email);
+
+    console.log("email", email);
 
     if (!email) {
       throw new Error("Email is required");
     }
-
     const data = await authService.forgotPassword({ email });
+
     res.send(data);
   } catch (error) {
     console.log(error.message);
@@ -113,20 +87,31 @@ const verifyOtp = async (req, res) => {
     const { otp } = req.body;
     const email = req.cookies.userEmail;
 
-    console.log(email);
+    if (!email || !otp) throw new Error("Email and otp required");
 
-    // const { email, otp } = req.body;
+    const doEmailExist = await Otp.findOne({ email });
 
-    if (!email || !otp) {
-      throw new Error("Email and OTP required");
+    if (!doEmailExist) {
+      throw new Error("Email doesn't exist!");
     }
 
-    const data = await authService.verifyOtp({ email, otp });
-    res.status(200).json({ data });
+    await User.findOneAndUpdate(
+      { email },
+      { otpExpiresAt: new Date(Date.now() + 30 * 1000) },
+      { new: true }
+    );
+
+    await Otp.deleteOne({ email });
+
+    if (doEmailExist == otp) {
+      throw new Error("Invallid Otp");
+    }
+    res.status(200).json({
+      message: "Otp validated",
+    });
   } catch (error) {
     console.log(error.message);
     res.send(error.message);
   }
 };
-
 export { register, login, forgotPassword, verifyOtp };
