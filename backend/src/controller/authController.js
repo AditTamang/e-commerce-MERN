@@ -111,7 +111,7 @@ const verifyOtp = async (req, res) => {
     });
   } catch (error) {
     console.log(error.message);
-    res.send(error.message);
+    res.status(400).json(error.message);
   }
 };
 export { register, login, forgotPassword, verifyOtp };

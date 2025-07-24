@@ -74,7 +74,7 @@ const forgotPassword = async (data) => {
 };
 const verifyOtp = async ({ email, otp }) => {
   const doesExist = await Otp.findOne({ email });
-
+  console.log(email, otp);
   if (!doesExist) {
     throw new Error("Email doesn't exist");
   }

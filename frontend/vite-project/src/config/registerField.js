@@ -10,14 +10,14 @@ const registerField = [
       id: "password",
       name: "password",
       label: "Password",
-      placeholder: "",
+      placeholder: "********",
       type: "password",
     },
     {
       id: "confirmPassword",
       name: "confirmPassword",
       label: "Confirm Password",
-      placeholder: "",
+      placeholder: "********",
       type: "password",
     },
     {
