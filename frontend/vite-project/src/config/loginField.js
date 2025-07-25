@@ -9,6 +9,7 @@ export const loginField = [
   {
     label: "Password",
     name: "password",
+    id: "password",
     placeholder: "*******",
     type: "password",
   },
@@ -18,6 +19,7 @@ export const resetField = [
   {
     label: "Password",
     name: "password",
+    id: "password",
     placeholder: "*******",
     type: "password",
   },
@@ -25,6 +27,7 @@ export const resetField = [
     label: "Confirm Password",
     id: "confirmPassword",
     name: "confirmPassword",
+    id: "confirmPassword",
     placeholder: "********",
     type: "password",
   },

@@ -1,39 +1,64 @@
-// ForgotPassword.jsx
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import TextField from '../components/TextField.jsx';
-import { handlePostOperation } from '../config/handlePostOperation.js';
+import { useEffect, useState } from "react";
+import TextField from "../components/TextField";
+import { handlePostOperation } from "../config/handlePostOperation";
+import { useNavigate } from "react-router-dom";
+import { handleGetOperation } from "../config/handleGetOperation";
+import toast from "react-hot-toast";
 
 const VerifyOtp = () => {
-  const [otp, setOtp] = useState("")
+  const [otp, setOtp] = useState("");
   const navigate = useNavigate();
-  
-  const email = localStorage.getItem("email")
-  console.log(email)
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await handlePostOperation('/auth/verify-otp',
-     { otp,email}
-    );
-    console.log(response)
+    const response = await handlePostOperation("/auth/verify-otp", {
+      otp,
+    });
+
+    console.log(response);
 
     if (response.status === 200) {
-      alert(response.data.message || "OTP send successfully"),
+      alert(response.data.message || "OTP verified!");
+      localStorage.setItem("isOtpVerified", true);
 
       setTimeout(() => {
         navigate("/reset-password");
       }, 1500);
     } else {
-      alert(response.response.data.error || "Error verifying OTP");
+      alert(response.response.data.error || "Error verifing otp!");
     }
+
     console.table(otp);
   };
 
+  useEffect(() => {
+    const email = localStorage.getItem("email");
+    if (!email) {
+      navigate("/forgot-password");
+    }
 
+    const checkAuth = async () => {
+      const response = await handleGetOperation("/auth/verify/2");
+      // setLoading(true);
 
-    return (
+      console.log(response);
+
+      if (response.status === 200) {
+        toast.success(response.response.data.message || "Success");
+        // setLoading(false);
+      } else {
+        toast.error(response.response.data.error || "Fail!");
+        navigate(-1);
+        // setLoading(false)
+      }
+    };
+
+    checkAuth();
+  }, []);
+
+  return (
     <>
-      <div className="h-screen flex flex-col items-center justify-center">
+      <div className="min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center">
         <div>Verify OTP</div>
         <div>
           <form
@@ -48,6 +73,8 @@ const VerifyOtp = () => {
               placeholder={"123456"}
               type={"text"}
               value={otp}
+              maxLength={6}
+              autoFocusOn="otp"
               onChange={(e) => setOtp(e.target.value)}
             />
 

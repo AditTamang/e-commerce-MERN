@@ -1,63 +1,60 @@
-// ForgotPassword.jsx
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { handlePostOperation } from '../config/handlePostOperation';
-const ForgotPassword = () => {
-  const [email, setEmail] = useState('');
-  const navigate = useNavigate();
+import { useState } from "react";
+import TextField from "../components/TextField";
+import { handlePostOperation } from "../config/handlePostOperation";
+import { useNavigate } from "react-router-dom";
 
+const ForgotPassword = () => {
+  const [email, setEmail] = useState("");
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const response = await handlePostOperation("/auth/forgot-password", {
+      email,
+    });
 
-    const response = await handlePostOperation('/auth/forgot-password',
-      {
-        email
-      });
-    console.log(response)
+    console.log(response);
 
     if (response.status === 200) {
-      alert(response.data.message || "OTP send successfully"),
-        localStorage.setItem("email", email)
+      alert(response.data.message || "OTP Sent!");
+      localStorage.setItem("email", email);
 
       setTimeout(() => {
         navigate("/verify-otp");
-      });
+      }, 1500);
     } else {
-      alert(response.response.message || "Error sending OTP");
+      alert(response.response.data || "Error sending otp!");
     }
-    console.table(email);
+    console.log(email);
   };
 
-
-
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-purple-500 via-pink-500 to-red-400">
-      <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-md">
-        <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Forgot Password 🔐</h2>
-        <form onSubmit={handleSubmit} className="space-y-5">
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Enter your email</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
+    <>
+      <div className="min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center">
+        <div>Forgot Password</div>
+        <div>
+          <form
+            onSubmit={handleSubmit}
+            className="p-4 border flex flex-col gap-4 items-start"
+          >
+            <TextField
+              key={"email"}
+              id={"email"}
+              name={"email"}
+              label={"Email"}
+              placeholder={"example@gmail.com"}
+              type={"email"}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="you@example.com"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400"
-              required
             />
-          </div>
-          <button
-            type="submit"
-            className="w-full py-2 bg-gradient-to-r from-purple-600 to-pink-500 text-white rounded-lg font-semibold hover:from-purple-700 hover:to-pink-600 transition duration-300"
-          >
-            Send OTP
-          </button>
-        </form>
+
+            {/* Submit button */}
+            <button type="submit">Submit</button>
+          </form>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

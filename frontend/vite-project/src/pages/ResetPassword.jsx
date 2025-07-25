@@ -1,53 +1,60 @@
-// ForgotPassword.jsx
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import TextField from '../components/TextField.jsx';
-import { resetField } from '../config/loginField.js';
-import { handlePostOperation } from '../config/handlePostOperation.js';
+import { useEffect, useState } from "react";
+import TextField from "../components/TextField";
+import { resetField } from "../config/loginField";
+import { handlePostOperation } from "../config/handlePostOperation";
+import { useNavigate } from "react-router-dom";
 
 const ResetPassword = () => {
-  const intialValue = {
+  const initialValue = {
     password: "",
-    confirmPassword: ""
-  }
-  const [formData, setFormData] = useState(intialValue)
+    confirmPassword: "",
+  };
+
   const navigate = useNavigate();
+
+  const [formData, setFormData] = useState(initialValue);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value })
-  }
+    setFormData({ ...formData, [name]: value });
+  };
+
+  useEffect(() => {
+    const email = localStorage.getItem("email");
+    const isOtpVerified = localStorage.getItem("isOtpVerified");
+    if (!email || !isOtpVerified) {
+      // alert("No email found. Please request a new OTP.");
+      navigate("/verify-otp");
+    }
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match!")
-      return
+      alert("Passwords do not match!");
+      return;
     }
+    const response = await handlePostOperation("/auth/reset-password", {
+      password: formData.password,
+    });
 
-    const response = await handlePostOperation('/auth/reset-password',
-      {
-        password: formData.password,
-      }
-    );
-    console.log(response)
+    console.log(response);
 
     if (response.status === 200) {
-      alert(response.data.message || "Password reset successful"),
-        setTimeout(() => {
-          navigate("/login");
-        }, 1500);
+      alert(response.data.message || "Password reset successful!");
+
+      setTimeout(() => {
+        navigate("/login");
+      }, 1500);
     } else {
-      alert(response.response.data.error || "Error reseting password");
+      alert(response.response.data || "Error reseting password");
     }
   };
 
-
-
   return (
     <>
-      <div className="h-screen flex flex-col items-center justify-center">
+      <div className="min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center">
         <div>Reset Password</div>
         <div>
           <form
@@ -59,6 +66,7 @@ const ResetPassword = () => {
                 key={name}
                 id={id}
                 name={name}
+                autoFocusOn="password"
                 label={label}
                 placeholder={placeholder}
                 type={type}

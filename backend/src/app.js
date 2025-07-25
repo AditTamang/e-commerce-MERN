@@ -32,7 +32,11 @@ app.get("/test", (req, res) => {
     maxAge: 5 * 1000,
     httpOnly: true,
   });
-  res.status(200).send("Hello! Welcome to my app");
+  res
+    .status(200)
+    .send(
+      "<b><a style='color: white; background: black; padding: 2px'>Hello</a>, Welcome to my app!</b>"
+    );
 });
 
 app.get("/api/clear-cookie", (req, res) => {

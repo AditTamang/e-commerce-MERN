@@ -1,80 +1,87 @@
+import authService from "../services/authService.js";
 import { createToken } from "../helpers/token.js";
-import Otp from "../models/Otp.js";
-import User from "../models/User.js";
-import authService from "../Services/authService.js";
 
 const register = async (req, res) => {
   try {
-    const { email, phone, password, confirmPassword, userName } = req.body;
+    const { email, phone, userName, password, confirmPassword } = req.body;
 
     if (!password || !email || !phone || !confirmPassword || !userName) {
-      return res.status(400).json({ message: "user credentials missing" });
+      return res.status(400).json({ message: "User credential is missing." });
     }
 
     if (password !== confirmPassword) {
-      return res.status(400).json({ message: "password donot match" });
+      return res.status(400).json({
+        message: "Password and confirm password does not match.",
+      });
     }
 
     const data = await authService.register({
-      email,
-      phone,
-      password,
-      userName,
+      email: email,
+      phone: phone,
+      userName: userName,
+      password: password,
     });
+
     res.status(201).json({
-      message: "user registered successful",
+      message: "User registered successful",
       data,
     });
   } catch (error) {
     console.log(error.message);
-    res
-      .status(500)
-      .json({ message: "error occured to register", error: error.message });
+    res.status(500).json({
+      message: "Error occured to register",
+      error: error.message,
+    });
   }
 };
 
 const login = async (req, res) => {
   try {
+    //login function
     const { email, password } = req.body;
 
     if (!email || !password) {
-      // return res.status(400).json({message:"user credentials missing"})
-      throw new Error("user credentials missing");
+      throw new Error("User credential is missing.");
     }
+
     const data = await authService.login({ email, password });
+
     const payload = {
       id: data._id,
+      userName: data.userName,
       role: data.role,
       phone: data.phone,
       email: data.email,
     };
+
     const token = createToken(payload);
     res.cookie("authToken", token);
+
     res.status(200).json({
-      message: "login successful",
+      message: "Login successful",
       data,
       token,
     });
   } catch (error) {
     console.log(error.message);
-    res
-      .status(400)
-      .json({ message: "error occurred during login", error: error.message });
+    res.status(400).send(error.message);
   }
 };
 
 const forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
-    res.cookie("userEmail", email);
 
-    console.log("email", email);
+    res.cookie("userEmail", email, {
+      maxAge: 5 * 60 * 1000,
+      httpOnly: true,
+    });
 
     if (!email) {
       throw new Error("Email is required");
     }
-    const data = await authService.forgotPassword({ email });
 
+    const data = await authService.forgotPassword({ email });
     res.send(data);
   } catch (error) {
     console.log(error.message);
@@ -87,31 +94,18 @@ const verifyOtp = async (req, res) => {
     const { otp } = req.body;
     const email = req.cookies.userEmail;
 
-    if (!email || !otp) throw new Error("Email and otp required");
+    console.log(email);
 
-    const doEmailExist = await Otp.findOne({ email });
-
-    if (!doEmailExist) {
-      throw new Error("Email doesn't exist!");
+    if (!email || !otp) {
+      throw new Error("Email and Otp required!");
     }
 
-    await User.findOneAndUpdate(
-      { email },
-      { otpExpiresAt: new Date(Date.now() + 30 * 1000) },
-      { new: true }
-    );
-
-    await Otp.deleteOne({ email });
-
-    if (doEmailExist == otp) {
-      throw new Error("Invallid Otp");
-    }
-    res.status(200).json({
-      message: "Otp validated",
-    });
+    const data = await authService.verifyOtp({ email, otp });
+    res.status(200).json({ data });
   } catch (error) {
     console.log(error.message);
-    res.status(400).json(error.message);
+    res.status(400).json({ error: error.message });
   }
 };
+
 export { register, login, forgotPassword, verifyOtp };
