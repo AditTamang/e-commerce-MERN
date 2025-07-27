@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
-import { navbarFields } from "../config/navbarFields";
+import { navbarFields } from "../config/navbarField";
+
 
 const Navbar = () => {
   const location = useLocation();

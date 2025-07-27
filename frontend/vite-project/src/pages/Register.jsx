@@ -1,8 +1,8 @@
 import { useState } from "react";
 import TextField from "../components/TextField";
 import registerField from "../config/registerField";
-import { handlePostOperation } from "../config/handlePostOperation";
-import { registerInitialValue } from "../config/constants";
+import {handlePostOperation} from "../config/handlePostOperation.js";
+import {registerInitialValue} from '../config/constant.js'
 
 const Register = () => {
   const [formData, setFormData] = useState(registerInitialValue);

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom'
 import Home from './pages/Home'
 import Login from './pages/Login'
@@ -7,19 +7,36 @@ import ForgotPassword from './pages/ForgotPassword'
 import ResetPassword from './pages/ResetPassword'
 import VerifyOtp from './pages/VerifyOtp'
 import Navbar from './components/Navbar'
+import { createContext } from 'vm'
+import PageA from './pages/PageA'
+import PageB from './pages/PageB'
+import Pagec from './pages/Pagec'
+
+const MyContext = createContext();
+
+export const useMyContext = ()=> useContext(MyContext);
 
 const App = () => {
-  return (
+  
+  return(
+  
     <BrowserRouter>
+    <MyContext.Provider value={{name, age, email}}>
     <Navbar/>
+    <Toaster position="top-right"/>
       <Routes>
-        <Route path='/' element={<Home/>} />
+        <Route path='/' element={<Home/> } />
+        <Route path='/a' element={<PageA/>}/>        
+        <Route path='/b' element={<PageB/>}/>        
+        <Route path='/c' element={<Pagec/>}/>        
+        {/* <Route path='/' element={<Home/>} /> */}
         <Route path='/login' element={<Login/>} />
         <Route path='/register' element={<Register/>} />
         <Route path='/forgot-password' element={<ForgotPassword/>} />
         <Route path='/reset-password' element={<ResetPassword/>} />
         <Route path='/verify-otp' element={<VerifyOtp/>} />
       </Routes>
+    </MyContext.Provider>
     </BrowserRouter>
   )
 }
