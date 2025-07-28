@@ -1,65 +1,68 @@
 import mongoose from "mongoose";
 
-const productSchema = new mongoose.Schema({
-
-    productName:{
-        type: String,
-        required: true
+const productSchema = new mongoose.Schema(
+  {
+    productName: {
+      type: String,
+      required: true,
     },
-    productDescription:{
-        type: String
+    productDescription: {
+      type: String,
     },
     price: {
-        type: Number,
-        required : true
+      type: Number,
+      required: true,
     },
-    stock:{
-        type: Number,
-        default: 0
+    stock: {
+      type: Number,
+      default: 0,
     },
-    ram :{
-        type: Number
+    ram: {
+      type: Number,
     },
-    rom:{
-        type: Number
+    rom: {
+      type: Number,
     },
-    display:{
-        type: String
+    display: {
+      type: String,
     },
-    processor:{
-        type: String
+    processor: {
+      type: String,
     },
-    imageUrl:{
-        type: String
+    imageUrl: {
+      type: String,
     },
-    featured : {
-        type: Boolean,
-        default: true
+    imageName: {
+      type: String,
     },
-    rating:{
-        type: Number,
-        default: 0
+    featured: {
+      type: Boolean,
+      default: true,
+    },
+    rating: {
+      type: Number,
+      default: 0,
     },
     isActive: {
-        type: Boolean,
-        default: true,
+      type: Boolean,
+      default: true,
     },
-    gen:{
-        type: Number
+    gen: {
+      type: Number,
     },
-    brand:{
-        type: String,
+    brand: {
+      type: String,
     },
-    use:{
-        type: String,
-        enum: ["Gaming", "Professional", "Normal","Office"]
-    }
-},
-{
-    timestamps: true
-}
-)
+    use: {
+      type: String,
+      enum: ["Gaming", "Professional", "Normal", "Office"],
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
 
-const Product = mongoose.model("Product", productSchema)
+const Product = mongoose.model("Product", productSchema);
 
 export default Product;

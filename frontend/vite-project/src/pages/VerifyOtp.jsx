@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import TextField from "../components/TextField";
-import { handlePostOperation } from "../config/handlePostOperation";
 import { useNavigate } from "react-router-dom";
-import { handleGetOperation } from "../config/handleGetOperation";
 import toast from "react-hot-toast";
+import { handleGetOperation } from "../config/handleGetOperation";
+import { handlePostOperation } from "../config/handlePostOperation";
 
 const VerifyOtp = () => {
   const [otp, setOtp] = useState("");
