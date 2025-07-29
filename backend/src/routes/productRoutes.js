@@ -21,6 +21,6 @@ router.get("/getProductById/:id", getProductById);
 
 router.delete("/deleteProductById/:id", isLoggedIn, isAdmin, deleteProductById);
 
-router.put("/updateProductById/:id", isLoggedIn, isAdmin, updateProductById);
+router.put("/updateProductById/:id", uploads.single('image'), updateProductById);
 
 export default router;

@@ -12,9 +12,7 @@ const createProduct = async (req, res) => {
 
   console.log(req.body);
   const filePath = req.file.path;
-  const fileName = req.file.fileName;
-
-  // return res.send(req.file)
+  const fileName = req.file.filename;
 
   const product = req.body;
   //     console.log(product)
@@ -102,8 +100,15 @@ const deleteProductById = async (req, res) => {
 
 const updateProductById = async (req, res) => {
   try {
-    const productId = req.params.id;
+    if (req.file) {
+      console.log(req.file);
+      const newFilePath = req.file.path;
+      const newFileName = req.file.filename;
+      req.body.imageName = newFileName
+      req.body.imagePath = newFilePath
+    }
 
+    const productId = req.params.id;
     const product = req.body;
 
     const data = await productService.updateProductById(product, productId);
