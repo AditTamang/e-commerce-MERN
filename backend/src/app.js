@@ -5,6 +5,7 @@ import { configDotenv } from "dotenv";
 import connectDb from "./config/db.js";
 import productRoutes from "./routes/productRoutes.js";
 import authRoutes from "../src/routes/authRoutes.js";
+import orderRoutes from "../src/routes/orderRoutes.js";
 import cookieParser from "cookie-parser";
 import constant from "./config/constant.js";
 import cors from "cors";
@@ -50,6 +51,7 @@ app.get("/api/clear-cookie", (req, res) => {
 app.use("/api/user", userRoutes);
 app.use("/api/product", productRoutes);
 app.use("/api/auth", authRoutes);
+app.use('/api/order', orderRoutes)
 
 const port = constant.PORT;
 app.listen(4000, () => {

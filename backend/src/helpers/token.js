@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import constant from "../config/constant.js";
 
 const createToken = (payload) => {
   return jwt.sign(payload, constant.JWT_SECRET);
