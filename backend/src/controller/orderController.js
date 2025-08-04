@@ -1,4 +1,5 @@
 import OrderService from "../services/OrderService.js";
+import axios from "axios";
 
 const createOrder = async (req, res) => {
   try {
@@ -6,6 +7,33 @@ const createOrder = async (req, res) => {
 
     const order = req.body;
     order.user = userId;
+
+    if (order.paymentMethod === "KHALTI") {
+      console.log(order);
+
+      const totalAmount = order.totalAmount;
+
+      const options = {
+        return_url: "http://localhost:5173/dashboard",
+        website_url: "http://localhost:5173/",
+        amount: totalAmount * 100,
+        purchase_order_id: Date.now(),
+        purchase_order_name: `order- ${Date.now()}`,
+      };
+
+      const result = await axios.post(
+        "https://dev.khalti.com/api/v2/epayment/initiate/",
+        options,
+        {
+          headers: {
+            Authorization: `KEY ${process.env.KHALTI_SECRET_KEY}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log(result.data);
+      return res.status(200).send(result.data);
+    }
 
     const data = await OrderService.createOrder(order);
 
@@ -89,7 +117,7 @@ const updateOrderStatus = async (req, res) => {
     const status = req.body.orderStatus;
     const data = await OrderService.updateOrderStatus(orderId, status);
     res.status(200).json({ data });
-    console.log(data)
+    console.log(data);
   } catch (error) {
     console.log(error.message);
     res.status(400).json({

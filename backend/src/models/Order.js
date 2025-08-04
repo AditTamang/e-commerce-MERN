@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
-import {v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
-const OrderSchema = new mongoose.Schema({
+const orderSchema = new mongoose.Schema({
   user: {
-    type: mongoose.Schema.Types.ObjectId, //Id save garnu ko lagi chai yoh gareko
+    type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
   },
@@ -14,11 +14,7 @@ const OrderSchema = new mongoose.Schema({
   cartItems: {
     type: [
       {
-        product: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Product",
-          required: true,
-        },
+        product: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },
         quantity: { type: Number, default: 1 },
       },
     ],
@@ -29,7 +25,6 @@ const OrderSchema = new mongoose.Schema({
   },
   phone: {
     type: String,
-    require: true,
   },
   orderStatus: {
     type: String,
@@ -37,15 +32,18 @@ const OrderSchema = new mongoose.Schema({
   },
   paymentStatus: {
     type: String,
-    enum: ["pending", "paid", "failed", "notPaid"],
+    enum: ["paid", "notPaid"],
     default: "notPaid",
   },
   paymentMethod: {
     type: String,
-    enum: ["COD", "Khalti"],
+    enum: ["COD", "KHALTI"],
+  },
+  totalAmount: {
+    type: Number,
+    required: true,
   },
 });
-
-const Order = mongoose.model("Order", OrderSchema);
+const Order = mongoose.model("Order", orderSchema);
 
 export default Order;
