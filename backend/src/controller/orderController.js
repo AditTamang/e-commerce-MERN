@@ -31,8 +31,22 @@ const createOrder = async (req, res) => {
           },
         }
       );
-      console.log(result.data);
-      return res.status(200).send(result.data);
+
+      if (result.data.pidx) {
+        order.pidx = result.data.pidx;
+
+        const khaltiResult = await OrderService.createOrder(order);
+
+        khaltiResult.paymentUrl = result.data.payment_url;
+
+        console.log(result.data);
+        return res.status(200).json({
+          data: khaltiResult,
+          payment_url: result.data.payment_url,
+        });
+      } else {
+        throw new Error("Khalti payment initiate failed.!");
+      }
     }
 
     const data = await OrderService.createOrder(order);
@@ -101,7 +115,7 @@ const updatePaymentStatus = async (req, res) => {
   try {
     const status = req.body.paymentStatus;
     const id = req.params.id;
-    const data = await orderService.updatePaymentStatus(id, status);
+    const data = await OrderService.updatePaymentStatus(id, status);
     res.status(200).json({ data });
   } catch (error) {
     res.status(400).json({
@@ -127,10 +141,23 @@ const updateOrderStatus = async (req, res) => {
   }
 };
 
+const updateKhaltiPaymentStatus = async (req, res) => {
+  try {
+    const { pidx, totalAmount } = req.body;
+    const userId = req.user.id;
+    await updateKhaltiPaymentStatus(pidx, totalAmount, userId);
+    res.status(200).send("Update payment Status");
+  } catch (error) {
+    console.log(error.message);
+    res.status(400).send("Failed to update Payment Status");
+  }
+};
+
 export {
   createOrder,
   getOrderById,
   updateOrderStatus,
   getOrderByUserId,
   updatePaymentStatus,
+  updateKhaltiPaymentStatus,
 };
