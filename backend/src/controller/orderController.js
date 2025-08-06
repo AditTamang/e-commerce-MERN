@@ -145,7 +145,7 @@ const updateKhaltiPaymentStatus = async (req, res) => {
   try {
     const { pidx, totalAmount } = req.body;
     const userId = req.user.id;
-    await updateKhaltiPaymentStatus(pidx, totalAmount, userId);
+    const data = await OrderService.updateKhaltiPaymentStatus(pidx, totalAmount, userId);
     res.status(200).send("Update payment Status");
   } catch (error) {
     console.log(error.message);
