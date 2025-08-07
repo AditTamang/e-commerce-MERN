@@ -68,17 +68,17 @@ const updateKhaltiPaymentStatus = async (pidx, totalAmount, userId) => {
   if (result.data.status !== "Completed") {
     throw new Error("Payment is not completed");
   }
-  console.log(result.data.total_amount,order.totalAmount*100)
-  if (result.data.total_amount !== order.totalAmount *100) {
+  console.log(result.data.total_amount, order.totalAmount * 100);
+  if (result.data.total_amount !== order.totalAmount * 100) {
     throw new Error("Amount didn't match.");
   }
 
   return await Order.findOneAndUpdate({ pidx }, { paymentStatus: "COMPLETED" });
 
-  const results = await Order.findOneAndUpdate(
-    { pidx },
-    { paymentStatus: "COMPLETED" }
-  );
+  // const results = await Order.findOneAndUpdate(
+  //   { pidx },
+  //   { paymentStatus: "COMPLETED" }
+  // );
 };
 
 export default {
