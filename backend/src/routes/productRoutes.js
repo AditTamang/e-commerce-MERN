@@ -22,7 +22,7 @@ router.get("/getProductById/:id", getProductById);
 
 router.delete("/deleteProductById/:id", isLoggedIn, isAdmin, deleteProductById);
 
-router.put(
+router.post(
   "/updateProductById/:id",
   uploads.single("image"),
   updateProductById
@@ -37,7 +37,7 @@ router.post("/gemini", async (req, res) => {
 
   const result = await gemini(product);
   console.log(result);
-
+  pp;
   res.send(result);
 
   // console.log(result.data);

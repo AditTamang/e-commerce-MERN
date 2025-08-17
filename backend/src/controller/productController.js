@@ -61,7 +61,7 @@ const getAllProduct = async (req, res) => {
 
 const getProductById = async (req, res) => {
   try {
-    console.log("first");
+    console.log("getting all the product");
     if (!req.params.id) {
       return new Error("id is required");
     }
@@ -104,8 +104,8 @@ const updateProductById = async (req, res) => {
       console.log(req.file);
       const newFilePath = req.file.path;
       const newFileName = req.file.filename;
-      req.body.imageName = newFileName
-      req.body.imagePath = newFilePath
+      req.body.imageName = newFileName;
+      req.body.imagePath = newFilePath;
     }
 
     const productId = req.params.id;

@@ -7,9 +7,6 @@ import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import VerifyOtp from './pages/VerifyOtp';
 import Navbar from './components/Navbar';
-import PageA from './pages/PageA';
-import PageB from './pages/PageB';
-import Pagec from './pages/Pagec';
 import { Toaster } from "react-hot-toast";
 
 const MyContext = createContext();
@@ -27,9 +24,6 @@ const App = () => {
         <Toaster position="top-right" />
         <Routes>
           <Route path='/' element={<Home />} />
-          <Route path='/a' element={<PageA />} />
-          <Route path='/b' element={<PageB />} />
-          <Route path='/c' element={<Pagec />} />
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
           <Route path='/forgot-password' element={<ForgotPassword />} />

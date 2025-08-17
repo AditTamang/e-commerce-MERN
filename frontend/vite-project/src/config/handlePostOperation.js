@@ -9,5 +9,5 @@ export const handlePostOperation = async (url, data) => {
     return result;
   } catch (error) {
     return error;
-  }
+  } 
 };

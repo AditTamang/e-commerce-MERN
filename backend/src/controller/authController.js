@@ -47,7 +47,7 @@ const login = async (req, res) => {
     const data = await authService.login({ email, password });
 
     const payload = {
-      id: data._id,
+      _id: data._id,
       userName: data.userName,
       role: data.role,
       phone: data.phone,
@@ -59,7 +59,7 @@ const login = async (req, res) => {
 
     res.status(200).json({
       message: "Login successful",
-      data,
+      data:payload,
       token,
     });
   } catch (error) {
